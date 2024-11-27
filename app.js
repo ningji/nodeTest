@@ -1,13 +1,21 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const http = require('http');
+const responseTime = require('response-time');
+
 const router = require('./routes/user.js');
 
 const app = new express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(responseTime());
 
-// app.use(express.json());
+const myLogger = (req, res, next) => {
+    console.log('-----------------');
+    next();
+    console.dir(res.getHeaders());
+}
+app.use(myLogger);
+
 app.use('/person', router);
 
 const server = app.listen(6666, function () {
