@@ -10,11 +10,19 @@ app.use(express.urlencoded({extended: true}));
 app.use(responseTime());
 
 const myLogger = (req, res, next) => {
-    console.log('-----------------');
+    console.log('-------11----------');
     next();
+    console.log('-------12----------');
     console.dir(res.getHeaders());
 }
-app.use(myLogger);
+
+const myLogger2 = (req, res, next) => {
+    console.log('-------21----------');
+    next();
+    console.log('-------22----------');
+    console.dir(res.getHeaders());
+}
+app.use([myLogger, myLogger2]);
 
 app.use('/person', router);
 
